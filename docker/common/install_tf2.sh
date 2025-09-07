@@ -99,6 +99,7 @@ else
         && pip uninstall -y h5py  \
         && mamba install -y --override-channels --force-reinstall h5py=2.10.0 -c conda-forge  \
     && pip install --force protobuf==3.20.3 \
+    && pip install image-classifiers \
     && conda clean -y --force-pkgs-dirs \
     && sudo rm -fr ~/.cache \
     && sudo rm -fr /scratch/* \
