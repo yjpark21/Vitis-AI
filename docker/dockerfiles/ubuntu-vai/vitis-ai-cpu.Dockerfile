@@ -31,4 +31,9 @@ ADD conda/banner.sh /etc/
 ADD conda/${DOCKER_TYPE}_conda/bashrc /etc/bash.bashrc
 RUN if [[ -n "${TARGET_FRAMEWORK}" ]]; then  bash ./install_${TARGET_FRAMEWORK}.sh; fi
 USER root
+RUN echo 'Acquire::ForceIPv4 "true";' | tee /etc/apt/apt.conf.d/99force-ipv4
+RUN cp /etc/apt/sources.list /etc/apt/sources.list.bak
+RUN sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+RUN sed -i 's/security.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+RUN apt update
 RUN mkdir -p ${VAI_ROOT}/conda/pkgs && chmod 777 ${VAI_ROOT}/conda/pkgs && ./install_vairuntime.sh && rm -fr ./*

@@ -5,15 +5,15 @@ set -ex
 echo ' Acquire::http::Timeout "600";' |tee -a /etc/apt/apt.conf.d/99timeout &&
 echo ' Acquire::Retries "3";' | tee -a /etc/apt/apt.conf.d/99timeout
 if [[ "${XRT_URL}" =~ ".deb" ]]; then
-   cd /tmp && wget --progress=dot:mega -O xrt.deb ${XRT_URL} \
-    && apt-get update -y \
-    && apt-get install -y ./xrt.deb
+   cd /tmp && wget --progress=dot:mega -O xrt.deb ${XRT_URL}
+    sudo apt-get update -y
+    apt-get install -y ./xrt.deb
  
 else
     # in case parsing xrt folder
-   cd /tmp && wget --progress=dot:mega  -r -nd  --no-parent -A "*`lsb_release -r -s`*-xrt.deb"  ${XRT_URL} \
-    && apt-get update -y \
-    && apt-get install -y ./*xrt*.deb
+   cd /tmp && wget --progress=dot:mega  -r -nd  --no-parent -A "*`lsb_release -r -s`*-xrt.deb"  ${XRT_URL}
+   apt-get update -y 
+   apt-get install -y ./*xrt*.deb
 
    # XRT_URL="${XRT_URL}/*`lsb_release -r -s`*-xrt.deb"
      #-r -nd  --no-parent -A "*18.04-amd64-xrt.deb" 

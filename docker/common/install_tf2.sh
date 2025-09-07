@@ -86,17 +86,19 @@ else
     && conda config --remove channels defaults || true \
     && mamba env create -f /scratch/${DOCKER_TYPE}_conda/vitis-ai-tensorflow2.yml \
     && conda activate vitis-ai-tensorflow2 \
-    && pip install --ignore-installed ${tensorflow_ver} \
-    && mamba install --no-update-deps -y  pydot pyyaml jupyter ipywidgets \
+    && pip install --ignore-installed tf2onnx==1.13.0 flatbuffers==2.0.7 dm-tree ${tensorflow_ver} \
+    && conda update mamba -n base -c conda-forge \
+    && mamba install -y pydot pyyaml jupyter ipywidgets \
             dill progressbar2 pytest pandas matplotlib \
             pillow -c ${conda_channel} -c conda-forge -c defaults \
+        && conda install orderedset \
         && pip install -r /scratch/pip_requirements.txt \
         && pip install transformers pycocotools scikit-learn scikit-image tqdm easydict \
-        && pip install --ignore-installed ${tensorflow_ver} \
+        && pip install --ignore-installed tf2onnx==1.13.0 flatbuffers==2.0.7 dm-tree ${tensorflow_ver} \
         && pip uninstall -y h5py \
         && pip uninstall -y h5py  \
         && mamba install -y --override-channels --force-reinstall h5py=2.10.0 -c conda-forge  \
-    && pip install --force --no-binary protobuf protobuf==3.20.3 \
+    && pip install --force protobuf==3.20.3 \
     && conda clean -y --force-pkgs-dirs \
     && sudo rm -fr ~/.cache \
     && sudo rm -fr /scratch/* \
